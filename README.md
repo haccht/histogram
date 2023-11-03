@@ -10,7 +10,7 @@ Usage:
 
 Application Options:
   -b, --bins=  Number of bins in the histogram (default: 10)
-  -c, --chart  Draw the bar chart
+  -c, --chart  Draw a bar chart
 
 Help Options:
   -h, --help   Show this help message
