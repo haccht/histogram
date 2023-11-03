@@ -2,7 +2,6 @@ package main
 
 import (
 	"bufio"
-	"flag"
 	"fmt"
 	"io"
 	"log"
@@ -12,6 +11,7 @@ import (
 	"strings"
 
 	flags "github.com/jessevdk/go-flags"
+	"golang.org/x/crypto/ssh/terminal"
 )
 
 type options struct {
@@ -30,16 +30,19 @@ func main() {
 	}
 
 	readers := make([]io.Reader, 0, len(args)+1)
-	if len(args) == 0 {
+	if !terminal.IsTerminal(0) {
 		readers = append(readers, os.Stdin)
 	}
-	for _, arg := range flag.Args() {
+	for _, arg := range args {
 		f, err := os.Open(arg)
 		if err != nil {
 			log.Fatalf("fail to open file %s: %s", arg, err)
 		}
 		defer f.Close()
 		readers = append(readers, f)
+	}
+	if len(readers) == 0 {
+		os.Exit(0)
 	}
 
 	var sum float64
