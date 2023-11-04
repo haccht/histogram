@@ -30,9 +30,6 @@ func main() {
 	}
 
 	readers := make([]io.Reader, 0, len(args)+1)
-	if !terminal.IsTerminal(0) {
-		readers = append(readers, os.Stdin)
-	}
 	for _, arg := range args {
 		f, err := os.Open(arg)
 		if err != nil {
@@ -40,6 +37,9 @@ func main() {
 		}
 		defer f.Close()
 		readers = append(readers, f)
+	}
+	if !terminal.IsTerminal(0) {
+		readers = append(readers, os.Stdin)
 	}
 	if len(readers) == 0 {
 		os.Exit(0)
