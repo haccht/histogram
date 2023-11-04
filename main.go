@@ -36,7 +36,7 @@ func main() {
 	for _, arg := range args {
 		f, err := os.Open(arg)
 		if err != nil {
-			log.Fatalf("fail to open file %s: %s", arg, err)
+			log.Fatalf("failed to open file %s: %s", arg, err)
 		}
 		defer f.Close()
 		readers = append(readers, f)
