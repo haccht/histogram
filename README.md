@@ -1,10 +1,10 @@
-# histgram
+# histogram
 
 Render histograms in the terminal.
 
 
 ```
-$ histgram -h
+$ histogram -h
 Usage:
   histogram [OPTIONS]
 
@@ -32,7 +32,7 @@ $ head normaldistribution.txt
 -1.9599639845509635
 -1.3105791121681314
 
-$ cat normaldistribution.txt | histgram
+$ cat normaldistribution.txt | histogram
 Total count = 300
 Min/Avg/Max = -2.58 / 0.00 / 2.58
 
@@ -51,7 +51,7 @@ Min/Avg/Max = -2.58 / 0.00 / 2.58
 `histogram` can also draw a bar chart of the histogram..
 
 ```
-$ cat normaldistribution.txt | histgram -c
+$ cat normaldistribution.txt | histogram -c
 Total count = 300
 Min/Avg/Max = -2.58 / 0.00 / 2.58
 
