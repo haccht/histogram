@@ -4,7 +4,6 @@ import (
 	"bufio"
 	"fmt"
 	"io"
-	"log"
 	"os"
 	"sort"
 	"strconv"
@@ -20,7 +19,7 @@ type options struct {
 	Chart bool `short:"c" long:"chart" description:"Draw the bar chart"`
 }
 
-func run() {
+func run() error {
 	var opts options
 	args, err := flags.Parse(&opts)
 	if err != nil {
