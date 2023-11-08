@@ -88,15 +88,11 @@ func run() error {
 
 	tw := tabwriter.NewWriter(os.Stdout, 0, 0, 1, ' ', tabwriter.AlignRight)
 	for idx, count := range bins {
-		bmin := fmt.Sprintf("%8.2f", min+w*float64(idx))
-		bmax := fmt.Sprintf("%8.2f", min+w*float64(idx)+w)
+		bmin := fmt.Sprintf("%.2f", min+w*float64(idx))
+		bmax := fmt.Sprintf("%.2f", min+w*float64(idx)+w)
 		bar := "  " + strings.Repeat("|", 40*count/mcount)
 
-		fmt.Fprintf(tw, "[\t%s,\t %s\t]\t%6d\t", bmin, bmax, count)
-		if opts.Chart {
-			fmt.Fprint(tw, bar)
-		}
-		fmt.Fprintln(tw, "")
+		fmt.Fprintf(tw, "[\t%s,\t %s\t]\t%6d\t%s\n", bmin, bmax, count, bar)
 	}
 	tw.Flush()
 
