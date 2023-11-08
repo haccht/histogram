@@ -16,7 +16,6 @@ import (
 
 type options struct {
 	Bins  int  `short:"b" long:"bins" description:"Number of bins in the histogram" default:"10"`
-	Chart bool `short:"c" long:"chart" description:"Draw the bar chart"`
 }
 
 func run() error {
