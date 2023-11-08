@@ -9,6 +9,7 @@ import (
 	"sort"
 	"strconv"
 	"strings"
+    "text/tabwriter"
 
 	flags "github.com/jessevdk/go-flags"
 	"golang.org/x/crypto/ssh/terminal"
@@ -86,15 +87,17 @@ func main() {
 	fmt.Printf("Total count = %d\n", len(vals))
 	fmt.Printf("Min/Avg/Max = %.2f / %.2f / %.2f\n\n", min, w/float64(len(vals)), max)
 
+    tw := tabwriter.NewWriter(os.Stdout, 0, 0, 1, ' ', tabwriter.AlignRight)
 	for idx, count := range bins {
 		bmin := fmt.Sprintf("%8.2f", min+w*float64(idx))
 		bmax := fmt.Sprintf("%8.2f", min+w*float64(idx)+w)
 		bar := "  " + strings.Repeat("|", 40*count/mcount)
 
-		fmt.Printf("[%s - %s]\t%8d", bmin, bmax, count)
+		fmt.Fprintf(tw, "[\t%s,\t %s\t]\t%6d\t", bmin, bmax, count)
 		if opts.Chart {
-			fmt.Print(bar)
+			fmt.Fprint(tw, bar)
 		}
-		fmt.Println("")
+		fmt.Fprintln(tw, "")
 	}
+    tw.Flush()
 }
