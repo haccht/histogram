@@ -84,7 +84,7 @@ func run() error {
 	}
 
 	fmt.Printf("Total count = %d\n", len(vals))
-	fmt.Printf("Min/Avg/Max = %.2f / %.2f / %.2f\n\n", min, w/float64(len(vals)), max)
+	fmt.Printf("Min/Avg/Max = %.2f / %.2f / %.2f\n\n", min, sum/float64(len(vals)), max)
 
 	tw := tabwriter.NewWriter(os.Stdout, 0, 0, 1, ' ', tabwriter.AlignRight)
 	for idx, count := range bins {
