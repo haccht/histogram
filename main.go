@@ -55,8 +55,8 @@ func run() error {
 			vals = append(vals, val)
 		}
 	}
-	if scanner.Err() != nil {
-		return scanner.Err()
+	if err := scanner.Err(); err != nil {
+		return err
 	}
 
 	sort.Float64s(vals)
