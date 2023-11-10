@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"io"
 	"os"
-	"sort"
+    "slices"
 	"strconv"
 	"strings"
 	"text/tabwriter"
@@ -64,15 +64,12 @@ func run() error {
 		return nil
 	}
 
-	sort.Float64s(vals)
-
-	min := vals[0]
-	max := vals[len(vals)-1]
+	min := slices.Min(vals)
+	max := slices.Max(vals)
 	w := (max - min) / float64(opts.Bins)
 
 	var mcount int
 	bins := make([]int, opts.Bins, opts.Bins)
-
 	for _, val := range vals {
 		var idx int
 		if val != max {
