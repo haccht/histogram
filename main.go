@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"io"
 	"os"
-    "slices"
+	"slices"
 	"strconv"
 	"strings"
 	"text/tabwriter"
