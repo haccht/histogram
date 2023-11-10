@@ -59,6 +59,11 @@ func run() error {
 		return err
 	}
 
+	if len(vals) == 0 {
+		fmt.Printf("Total count = 0\n")
+		return nil
+	}
+
 	sort.Float64s(vals)
 
 	min := vals[0]
