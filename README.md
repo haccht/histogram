@@ -9,10 +9,12 @@ Usage:
   histogram [OPTIONS]
 
 Application Options:
-  -b, --bins=  Number of bins in the histogram (default: 10)
+  -b, --bins= Number of bins in the histogram (default: 10)
+      --min=  Minimum value in the histogram
+      --max=  Maximum value in the histogram
 
 Help Options:
-  -h, --help   Show this help message
+  -h, --help  Show this help message
 ```
 
 `histogram` render histograms from the given list of numbers.
