@@ -15,9 +15,9 @@ import (
 )
 
 type options struct {
-	Bins int     `short:"b" long:"bins" description:"Number of bins in the histogram" default:"10"`
-	Min  float64 `long:"min" description:"Minimum value in the histogram"`
-	Max  float64 `long:"max" description:"Maximum value in the histogram"`
+	Bins int      `short:"b" long:"bins" description:"Number of bins in the histogram" default:"10"`
+	Min  *float64 `long:"min" description:"Minimum value in the histogram"`
+	Max  *float64 `long:"max" description:"Maximum value in the histogram"`
 }
 
 func run() error {
@@ -54,10 +54,10 @@ func run() error {
 		text := strings.TrimSpace(scanner.Text())
 		if val, err := strconv.ParseFloat(text, 64); err == nil {
 			sum += val
-			if opts.Min != 0 && opts.Min > val {
+			if opts.Min != nil && *opts.Min > val {
 				continue
 			}
-			if opts.Max != 0 && opts.Max < val {
+			if opts.Max != nil && *opts.Max < val {
 				continue
 			}
 			vals = append(vals, val)
@@ -72,14 +72,14 @@ func run() error {
 		return nil
 	}
 
-	min := opts.Min
-	if min == 0 {
-		min = slices.Min(vals)
+	min := slices.Min(vals)
+	if opts.Min != nil {
+		min = *opts.Min
 	}
 
-	max := opts.Max
-	if max == 0 {
-		max = slices.Max(vals)
+	max := slices.Max(vals)
+	if opts.Max != nil {
+		max = *opts.Max
 	}
 
 	w := (max - min) / float64(opts.Bins)
