@@ -54,12 +54,6 @@ func run() error {
 		text := strings.TrimSpace(scanner.Text())
 		if val, err := strconv.ParseFloat(text, 64); err == nil {
 			sum += val
-			if opts.Min != nil && *opts.Min > val {
-				continue
-			}
-			if opts.Max != nil && *opts.Max < val {
-				continue
-			}
 			vals = append(vals, val)
 		}
 	}
@@ -72,26 +66,28 @@ func run() error {
 		return nil
 	}
 
-	min := slices.Min(vals)
+	var minVal, maxVal float64
 	if opts.Min != nil {
-		min = *opts.Min
+		minVal = *opts.Min
+	} else {
+		minVal = slices.Min(vals)
 	}
-
-	max := slices.Max(vals)
 	if opts.Max != nil {
-		max = *opts.Max
+		maxVal = *opts.Max
+	} else {
+		maxVal = slices.Max(vals)
 	}
 
-	w := (max - min) / float64(opts.Bins)
+	w := (maxVal - minVal) / float64(opts.Bins)
 
 	var mcount int
-	bins := make([]int, opts.Bins, opts.Bins)
+	bins := make([]int, opts.Bins)
 	for _, val := range vals {
 		var idx int
 		switch {
-		case min <= val && val < max:
-			idx = int((val - min) / w)
-		case val == max:
+		case minVal <= val && val < maxVal:
+			idx = int((val - minVal) / w)
+		case val == maxVal:
 			idx = opts.Bins - 1
 		}
 
@@ -106,8 +102,8 @@ func run() error {
 
 	tw := tabwriter.NewWriter(os.Stdout, 0, 0, 1, ' ', tabwriter.AlignRight)
 	for idx, count := range bins {
-		bmin := fmt.Sprintf("%.2f", min+w*float64(idx))
-		bmax := fmt.Sprintf("%.2f", min+w*float64(idx)+w)
+		bmin := fmt.Sprintf("%.2f", minVal+w*float64(idx))
+		bmax := fmt.Sprintf("%.2f", minVal+w*float64(idx)+w)
 		bar := "  " + strings.Repeat("|", 40*count/mcount)
 
 		fmt.Fprintf(tw, "[\t%s,\t %s\t]\t%6d\t%s\n", bmin, bmax, count, bar)
