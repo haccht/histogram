@@ -9,9 +9,11 @@ Usage:
   histogram [OPTIONS]
 
 Application Options:
-  -b, --bins= Number of bins in the histogram (default: 10)
-      --min=  Minimum value in the histogram
-      --max=  Maximum value in the histogram
+  -b, --bins=         Number of bins in the histogram (default: 10)
+      --min=          Minimum value in the histogram
+      --max=          Maximum value in the histogram
+      --percent       Display bin values as percentages
+      --percentiles=  Comma-separated percentiles to display (e.g. 50,90,99)
 
 Help Options:
   -h, --help  Show this help message
@@ -47,4 +49,10 @@ Min/Avg/Max = -3.25 / -0.01 / 3.23
  [  1.29,   1.93 ]     75  ||||||||||||
  [  1.93,   2.58 ]     18  ||
  [  2.58,   3.23 ]      4  
+```
+
+Show percentages instead of raw counts and print selected percentiles:
+
+```
+$ cat normaldistribution.txt | histogram --percent --percentiles 50,90,99
 ```
