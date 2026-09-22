@@ -17,9 +17,9 @@ import (
 
 type options struct {
 	Bins        int            `short:"b" long:"bins" description:"Number of bins in the histogram" default:"10"`
-	Min         *float64       `long:"min" description:"Minimum value in the histogram"`
-	Max         *float64       `long:"max" description:"Maximum value in the histogram"`
-	Percent     bool           `long:"percent" description:"Display bin values as percentages"`
+	Min         *float64       `long:"min" description:"Minimum value included in the statistics"`
+	Max         *float64       `long:"max" description:"Maximum value included in the statistics"`
+	Percent     bool           `long:"percent" description:"Display percentages after bin counts"`
 	Percentiles percentileList `long:"percentiles" description:"Comma-separated percentiles to display (e.g. 50,90,99)"`
 }
 
@@ -98,6 +98,12 @@ func renderHistogram(opts options, readers []io.Reader, stdout io.Writer) error 
 	for scanner.Scan() {
 		text := strings.TrimSpace(scanner.Text())
 		if val, err := strconv.ParseFloat(text, 64); err == nil {
+			if opts.Min != nil && val < *opts.Min {
+				continue
+			}
+			if opts.Max != nil && val > *opts.Max {
+				continue
+			}
 			sum += val
 			vals = append(vals, val)
 		}
@@ -197,9 +203,9 @@ func buildBins(vals []float64, binCount int, minVal, maxVal float64) ([]int, int
 func formatBinValue(count, total int, percent bool) string {
 	if percent {
 		if total == 0 {
-			return "  0.00%"
+			return fmt.Sprintf("%6d (%6.2f%%)", count, 0.0)
 		}
-		return fmt.Sprintf("%6.2f%%", 100*float64(count)/float64(total))
+		return fmt.Sprintf("%6d (%6.2f%%)", count, 100*float64(count)/float64(total))
 	}
 	return fmt.Sprintf("%6d", count)
 }
